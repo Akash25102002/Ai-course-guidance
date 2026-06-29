@@ -2,13 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./theme-toggle";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isSignedIn } = useAuth();
 
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/85 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/85">
@@ -41,26 +42,29 @@ export function Navbar() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            <SignedOut>
-              <Link href="/sign-in">
-                <Button variant="ghost" size="sm">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button variant="default" size="sm" className="flex items-center gap-1">
-                  Start Free <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </SignedOut>
-            <SignedIn>
-              <Link href="/dashboard" className="mr-2">
-                <Button variant="outline" size="sm">
-                  Dashboard
-                </Button>
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
+            {!isSignedIn ? (
+              <>
+                <Link href="/sign-in">
+                  <Button variant="ghost" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/sign-up">
+                  <Button variant="default" size="sm" className="flex items-center gap-1">
+                    Start Free <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/dashboard" className="mr-2">
+                  <Button variant="outline" size="sm">
+                    Dashboard
+                  </Button>
+                </Link>
+                <UserButton />
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -108,32 +112,36 @@ export function Navbar() {
             FAQ
           </Link>
           <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex flex-col gap-3">
-            <SignedOut>
-              <Link href="/sign-in" onClick={() => setIsOpen(false)} className="w-full">
-                <Button variant="outline" className="w-full">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/sign-up" onClick={() => setIsOpen(false)} className="w-full">
-                <Button variant="default" className="w-full">
-                  Start Free
-                </Button>
-              </Link>
-            </SignedOut>
-            <SignedIn>
-              <Link href="/dashboard" onClick={() => setIsOpen(false)} className="w-full">
-                <Button variant="outline" className="w-full">
-                  Dashboard
-                </Button>
-              </Link>
-              <div className="flex items-center gap-3 pt-2">
-                <UserButton afterSignOutUrl="/" />
-                <span className="text-sm text-zinc-600 dark:text-zinc-400">Account settings</span>
-              </div>
-            </SignedIn>
+            {!isSignedIn ? (
+              <>
+                <Link href="/sign-in" onClick={() => setIsOpen(false)} className="w-full">
+                  <Button variant="outline" className="w-full">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/sign-up" onClick={() => setIsOpen(false)} className="w-full">
+                  <Button variant="default" className="w-full">
+                    Start Free
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/dashboard" onClick={() => setIsOpen(false)} className="w-full">
+                  <Button variant="outline" className="w-full">
+                    Dashboard
+                  </Button>
+                </Link>
+                <div className="flex items-center gap-3 pt-2">
+                  <UserButton />
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Account settings</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
     </nav>
   );
 }
+export default Navbar;

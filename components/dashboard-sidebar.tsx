@@ -73,7 +73,7 @@ export function DashboardSidebar({ isAdmin = false }: SidebarProps) {
       {/* User Footer Profile */}
       <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
           <div className="flex flex-col text-left">
             <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Account</span>
             <span className="text-[10px] text-zinc-400">Manage settings</span>

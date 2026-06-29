@@ -4,10 +4,11 @@ const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/course(.*)",
   "/admin(.*)",
-  "/api/course(.*)", // Protect generation API endpoints
+  "/api/course(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
+// Named export 'proxy' is the new Next.js 16 convention
+export const proxy = clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
     await auth.protect();
   }

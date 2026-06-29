@@ -135,8 +135,8 @@ export function CoursePlayerClient({ courseData }: CoursePlayerClientProps) {
     try {
       const details = await getLessonDetailsAction(lesson.id);
       setLessonDetails((prev) => ({ ...prev, [lesson.id]: details }));
-      if (details.codingPractice?.starterCode) {
-        setUserCode(details.codingPractice.starterCode);
+      if (details.codingPractice && (details.codingPractice as any).starterCode) {
+        setUserCode((details.codingPractice as any).starterCode);
       }
     } catch (error: any) {
       toast({

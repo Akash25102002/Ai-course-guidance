@@ -268,7 +268,7 @@ export async function getProjectDetailsAction(projectId: string) {
   });
   if (!proj) throw new Error("Project not found");
 
-  if (proj.techStack && proj.techStack.length > 0) {
+  if (proj.techStack && (proj.techStack as string[]).length > 0) {
     return proj as ProjectDetails & { id: string; courseId: string };
   }
 
@@ -313,7 +313,7 @@ export async function getQuizDetailsAction(quizId: string) {
   });
   if (!quizRecord) throw new Error("Quiz not found");
 
-  if (quizRecord.questions && quizRecord.questions.length > 0) {
+  if (quizRecord.questions && (quizRecord.questions as any[]).length > 0) {
     return quizRecord;
   }
 
